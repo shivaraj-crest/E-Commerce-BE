@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Products', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,35 +11,36 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
-        
-      },
-      email: {
-        type: Sequelize.STRING,
         allowNull: false,
         unique: true
       },
-      mobile: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      password: {
-        type: Sequelize.STRING,
+      description: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      image: {
-        type: Sequelize.STRING,
+      images: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      stripe_customer_id: {
-        type: Sequelize.STRING,
+      price: {
+        type: Sequelize.FLOAT,
         allowNull: false
       },
-      role: {
-        type: Sequelize.ENUM('admin', 'user'),
-        allowNull: false,
-        defaultValue: 'user'
+      stock: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      rating: {
+        type: Sequelize.ENUM("1", "2", "3", "4", "5"),
+        allowNull: false
+      },
+      brand_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -52,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Products');
   }
 };
