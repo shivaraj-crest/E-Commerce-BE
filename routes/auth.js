@@ -1,17 +1,14 @@
 
-import express from 'express';
-import authController from '../controllers/authController';
-import checkDuplicateFields from '../middlewear/validateField';
-import { authenticate, authorizeRole } from '../middlewear/authMiddlewear';
-import upload from '../middlewear/uploadMiddlewear';
-
+const express = require('express');
+const authController = require('../controllers/authController');
+const checkDuplicateFields = require('../middlewear/validateField');
+const { authenticate, authorizeRole } = require('../middlewear/authMiddlewear');
+const upload = require('../middlewear/uploadMiddlewear');
 const Router = express.Router();
 
-
-
-
 Router.post('/register',upload.single('profile'),checkDuplicateFields,authController.register);
-Router.post('/login',authController.login);
+//add upload.none() is you're sending data as form data 
+Router.post('/login',upload.none(),authController.login);
 
 Router.use(authenticate);
 Router.get("/admin", authorizeRole("admin"), (req, res) => {
@@ -26,4 +23,4 @@ Router.get("/user", authorizeRole("user"), (req, res) => {
 
 
 
-export default Router;
+module.exports = Router;

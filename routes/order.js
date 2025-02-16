@@ -3,7 +3,7 @@ const {
     getAllOrders,
     getOrderListAdmin,
   } = require("../controllers/orderController");
-  const { authenticate, authorizeRole } = require("../middleware/authMiddleware");
+  const { authenticate, authorizeRole } = require("../middlewear/authMiddlewear");
   
   const router = require("express").Router();
   

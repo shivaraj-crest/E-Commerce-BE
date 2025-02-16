@@ -151,4 +151,5 @@ module.exports = {
     addCategory,
     updateCategory,
     deleteCategory,
+    getAllCategoriesWithProducts
 }

@@ -1,5 +1,5 @@
-const db = require('../models');
-const User = db.users;
+const {User} = require('../models');
+
 
 const checkDuplicateFields = async (req, res, next) => {
   // Access form-data fields directly

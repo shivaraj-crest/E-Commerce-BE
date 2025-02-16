@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: DataTypes.FLOAT,
     stock: DataTypes.INTEGER,
-    rating: DataTypes.ENUM,
+    rating: DataTypes.ENUM('1','2','3','4','5'),
     brand_id: DataTypes.INTEGER,
     category_id: DataTypes.INTEGER
   }, {

@@ -1,5 +1,10 @@
+const express = require('express');
 const {authenticate} = require('../middlewear/authMiddlewear');
 const Router = express.Router();
+const {addProductToCart,
+    getCartProducts,
+    deleteProductFromCart
+} = require('../controllers/cartController');
 
 Router.use(authenticate);
 
@@ -8,4 +13,4 @@ Router.get('/',getCartProducts);
 Router.delete('/',deleteProductFromCart);
 
 
-export default Router;
+module.exports = Router;

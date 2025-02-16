@@ -311,5 +311,5 @@ module.exports = {
     editProduct,
     deleteProduct,
     getAllProducts,
-    getProductById
+    getProductById,
 }

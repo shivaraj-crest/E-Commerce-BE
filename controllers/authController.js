@@ -7,10 +7,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const register = async (req, res) => {
   try {
-    const { name, email, number, password } = req.body;
+    const { name, email, mobile, password } = req.body;
 
     // Validate required fields
-    if (!name || !email || !number || !password) {
+    if (!name || !email || !mobile || !password) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
@@ -26,17 +26,18 @@ const register = async (req, res) => {
     const stripeCustomer = await stripe.customers.create({
       email: email,
       name: name,
-      phone: number,
+      phone: mobile,
     });
 
     // Store user in database
     const user = await User.create({
       name,
       email,
-      number,
+      mobile,
       password: hashedPassword,
       image: req.file.path, // Cloudinary image URL
       stripe_customer_id: stripeCustomer.id, // Store Stripe Customer ID
+      role:"user",
     });
 
     res.status(201).json({ message: "User registered successfully", user });
@@ -50,7 +51,9 @@ const register = async (req, res) => {
 const login = async(req,res,next)=>{
     try{
         const {email,password} = req.body;
-
+        
+      console.log("helllllllllllllo")
+      console.log(email,password)
         if(!email || !password){
             return res.status(400).json({message:"All fields are required"});
         }
@@ -83,7 +86,7 @@ const login = async(req,res,next)=>{
 
         
     }catch(error){
-        next(error);
+        console.log("hellooo",error);
     }
 }
 

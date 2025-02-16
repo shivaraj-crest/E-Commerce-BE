@@ -1,3 +1,6 @@
+const express = require('express');
+const Router = express.Router();
+
 const {getAllBrands,
     getProductsByBrand,
     addBrand,
@@ -5,7 +8,6 @@ const {getAllBrands,
     deleteBrand,
 } = require('../controllers/brandController');
 const {authenticate,authorizeRole} = require('../middlewear/authMiddlewear');
-const Router = express.Router();
 
 
 // Public Routes
@@ -18,3 +20,4 @@ Router.post("/add",authorizeRole('admin'),addBrand);
 Router.put("/:id",authorizeRole('admin'),updateBrand);
 Router.delete("/:id",authorizeRole('admin'),deleteBrand);
 
+module.exports = Router;

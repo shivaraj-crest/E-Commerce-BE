@@ -1,4 +1,4 @@
-import express from 'express';
+const express = require('express');
 const {authenticate,authorizeRole} = require('../middlewear/authMiddlewear');
 const Router = express.Router();
 const {getAllCategories,
@@ -6,6 +6,7 @@ const {getAllCategories,
     addCategory,
     updateCategory,
     deleteCategory,
+    getAllCategoriesWithProducts
 } = require('../controllers/categoryController');
 
 // Public Routes
@@ -23,4 +24,4 @@ Router.put("/", authorizeRole("admin"), updateCategory); // Admin-only: Update c
 Router.delete("/", authorizeRole("admin"), deleteCategory); // Admin-only: Delete categor
 
 
-export default Router;
+module.exports = Router;
