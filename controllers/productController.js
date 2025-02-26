@@ -1,10 +1,16 @@
-const Product = require('../models/product');
+const {Product} = require('../models');
+const {Category} = require('../models');
+const {Brand} = require('../models');
+const {Favorite}= require('../models');
+const db = require('../models');
+const { Op } = require('sequelize');
 
 const addProduct = async (req, res, next) => {
     try {
-        const {name,description,price,rating,stock,quantity,category_id,brand_id} = req.body;
+        console.log("hellllllllll", req.body);
+        const {name,description,price,rating,stock,category_id,brand_id} = req.body;
 
-        if(!name || !description || !price || !rating || !stock || !quantity || !category_id || !brand_id){
+        if(!name || !description || !price || !rating || !stock  || !category_id || !brand_id){
             return res.status(400).json({
                 message:"All fields are required"
             })
@@ -19,7 +25,7 @@ const addProduct = async (req, res, next) => {
 
         const images = req.files.map(file => file.path);
 
-        const Product = await Product.findOne({
+        const existingProduct = await Product.findOne({
             where:{
                 name:name,
             }
@@ -27,12 +33,12 @@ const addProduct = async (req, res, next) => {
 
         
 
-        if(Product){
+        if(existingProduct){
             return res.status(400).json({
                 message:"Product already exists"
             })
         }else{
-            const product = await Product.create({name,description,price,rating,stock,quantity,category_id,brand_id,
+            const product = await Product.create({name,description,price,rating,stock,category_id,brand_id,
                 images:JSON.stringify(images)
             });
             res.status(201).json({
@@ -116,6 +122,7 @@ const deleteProduct = async (req, res, next) => {
 
 const getAllProducts = async (req, res, next) => {
     try {
+       
         const user_id = req.user.id;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
@@ -192,29 +199,15 @@ const getAllProducts = async (req, res, next) => {
         ],
         order:[['createdAt','DESC']]
       })
-
-      // Format the products to include images and favourite flag and remove sequelize metadata
-      const formattedProducts = products.map((product) => {
-        const productJSON = product.toJSON();
-        let images = [];
   
-        try {
-          if (productJSON.images) {
-            images = JSON.parse(productJSON.images);
-          }
-        } catch (parseError) {
-          console.error("Error parsing images JSON:", parseError);
-          images = [];
-        }
-  
-        return {
-          ...productJSON,
-          images,
-          favourite: productJSON.favourites.length > 0, // Add favourite flag
-        };
-      });
 
+    const formattedProducts = products.map((product) => ({
+        ...product.toJSON(), // Remove Sequelize metadata we use findAndCountAll method 
+        favourite: product.favourites?.length > 0, // Add favourite flag
+        favouritesCount: product.favourites?.length ?? 0,
+      }));
 
+    //   console.log("FORMATTEDDATAAAAAAAAAAAAAAAAA",formattedProducts)
 
 
       res.status(200).json({

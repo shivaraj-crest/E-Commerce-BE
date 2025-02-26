@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const checkDuplicateFields = require('../middlewear/validateField');
 const { authenticate, authorizeRole } = require('../middlewear/authMiddlewear');
 const upload = require('../middlewear/uploadMiddlewear');
+const {User} = require('../models');
 const Router = express.Router();
 
 Router.post('/register',upload.single('profile'),checkDuplicateFields,authController.register);
@@ -11,14 +12,25 @@ Router.post('/register',upload.single('profile'),checkDuplicateFields,authContro
 Router.post('/login',upload.none(),authController.login);
 
 Router.use(authenticate);
-Router.get("/admin", authorizeRole("admin"), (req, res) => {
-    res.status(200).json({ message: "Welcome Admin!" });
-  });
-  
+//admin routes
+Router.get("/admin",(req, res) => {
+  res.status(200).json({ message: "Admin content",status:true });
+});
 
   // Protected Route Example (Check if User is Regular User)
-Router.get("/user", authorizeRole("user"), (req, res) => {
-    res.status(200).json({ message: "Welcome User!" });
+Router.get("/user",async (req, res) => {
+  const {id} = req.body;
+
+  if(!id) return res.status(400).json({message:"User id is required"});
+  const user = await User.findOne({
+    where:{
+      id
+    }
+  })
+
+  if(!user) return res.status(400).json({message:"User not found"});
+
+  res.status(200).json({message:"Welcome Admin!",user});
 });
 
 

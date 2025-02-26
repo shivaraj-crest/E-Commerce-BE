@@ -6,8 +6,8 @@ const checkDuplicateFields = require("../middlewear/validateField");
 
 const Router = express.Router();
 
-Router.post("/register", checkDuplicateFields, authController.register);
-Router.post("/login", authController.login);
+// Router.post("/register", checkDuplicateFields, authController.register);
+// Router.post("/login", authController.login);
 
 Router.use(authenticate);
 

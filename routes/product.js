@@ -14,12 +14,17 @@ const Router = express.Router();
 Router.use(authenticate);
 
 Router.get('/',getAllProducts)
+
+
+Router.post('/create',upload.array("images",5),addProduct)
+Router.put('/edit',editProduct)
+
+//is is sent in body
+Router.delete('/delete',deleteProduct)
+
+//keep /id below otherwise it would match with other routes like /create /edit, as create or would be 
+//matched with :id
 Router.get('/:id',getProductById)
-
-
-Router.get('/create',authorizeRole('admin'),upload.array("images",5),addProduct)
-Router.put('/edit',authorizeRole('admin'),editProduct)
-Router.delete('/',authorizeRole('admin'),deleteProduct)
 
 module.exports = Router
 

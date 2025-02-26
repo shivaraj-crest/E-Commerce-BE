@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     images:{
       type:DataTypes.TEXT,
+      
+      //This run whenever we're getting data from database and set runs when we're setting data
+      //In database we're converting array to json string to store so when we get it we 
+      //will parse it and convert it into array string.
       get() {
         return this.getDataValue("images") ? JSON.parse(this.getDataValue("images")) : [];
       },

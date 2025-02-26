@@ -48,7 +48,7 @@ const register = async (req, res) => {
 };
 
 
-const login = async(req,res,next)=>{
+const login = async(req,res)=>{
     try{
         const {email,password} = req.body;
         
@@ -90,6 +90,36 @@ const login = async(req,res,next)=>{
     }
 }
 
+
+const adminVerify = async(req,res)=>{
+  try {
+    // Verify the token
+    const token = req.headers.authorization?.split(" ")[1]; // Bearer token
+    if (!token) {
+      return res.status(401).json({ success: false, message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token and decode
+
+    // Check if token is expired
+    if (decoded.exp * 1000 < Date.now()) {
+      return res.status(401).json({ success: false, message: "Token expired" });
+    }
+
+    // Fetch user details and check the role
+    const user = await User.findByPk(decoded.userId); // Assuming user ID is stored in token
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ success: false, message: "Unauthorized" });
+    }
+
+    // If everything is fine, send success
+    res.json({ success: true, role: user.role });
+
+  } catch (error) {
+    return res.status(401).json({ success: false, message: "Invalid token" });
+  }
+
+}
 
 
 module.exports = {
