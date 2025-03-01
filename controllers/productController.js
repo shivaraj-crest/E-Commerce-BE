@@ -57,7 +57,8 @@ const addProduct = async (req, res, next) => {
 const editProduct = async (req, res, next) => {
     try {
         const {id} = req.body;
-
+        console.log("hellooooo",req.body)
+        console.log("byeeeeeeeeeeeeeeeeeeeeeee",id)
         if(!id){
             return res.status(400).json({
                 message:"Product id is required"
@@ -74,7 +75,7 @@ const editProduct = async (req, res, next) => {
 
         const {name,description,price,rating,stock,quantity,category_id,brand_id} = req.body;
 
-        if(!name || !description || !price || !rating || !stock || !quantity || !category_id || !brand_id){
+        if(!name || !description || !price || !rating || !stock || !category_id || !brand_id){
             return res.status(400).json({
                 message:"All fields are required"
             })
@@ -94,7 +95,7 @@ const editProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
     try {
-        const {id} = req.body;
+        const {id} = req.query;
 
         if(!id){
             return res.status(400).json({
@@ -271,21 +272,20 @@ const getProductById = async (req, res, next) => {
         }
 
         const productJSON = product.toJSON();
-        let images = [];
+        // let images = [];
 
-        try {
-            if(productJSON.images){
-                images = JSON.parse(productJSON.images);
-            }
-        } catch (parseError) {
-            console.error("Error parsing images JSON:", parseError);
-            images = [];
-        }
+        // try {
+        //     if(productJSON.images){
+        //         images = JSON.parse(productJSON.images);
+        //     }
+        // } catch (parseError) {
+        //     console.error("Error parsing images JSON:", parseError);
+        //     images = [];
+        // }
 
         const formattedProduct = {
             ...productJSON,
-            images,
-            favourite:productJSON.favourites.length > 0
+            favourite:productJSON.favourites?.length > 0
         };
 
         res.status(200).json({

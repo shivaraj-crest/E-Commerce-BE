@@ -17,7 +17,7 @@ Router.get('/',getAllProducts)
 
 
 Router.post('/create',upload.array("images",5),addProduct)
-Router.put('/edit',editProduct)
+Router.put('/edit',upload.none(),editProduct)
 
 //is is sent in body
 Router.delete('/delete',deleteProduct)
