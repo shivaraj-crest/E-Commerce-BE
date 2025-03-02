@@ -16,8 +16,8 @@ Router.get("/",getAllBrands);
 // Protected Routes
 Router.use(authenticate);
 
-Router.post("/add",authorizeRole('admin'),addBrand);
-Router.put("/:id",authorizeRole('admin'),updateBrand);
-Router.delete("/:id",authorizeRole('admin'),deleteBrand);
+Router.post("/add",addBrand);
+Router.put("/edit",updateBrand);
+Router.delete("/delete",deleteBrand);
 
 module.exports = Router;

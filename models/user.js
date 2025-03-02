@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id',
         as: 'addresses'
       });
+      // this.hasMany(models.Product,{
+      //   foreignKey: 'user_id',
+      // })
       
     }
   }

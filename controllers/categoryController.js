@@ -1,5 +1,4 @@
-
-const {Category,Product,Brand} = require('../models');
+const {User,Favorite,Product,Category,Brand,Cart} = require('../models');
 
 
 const getAllCategories = async(req,res,next)=>{
@@ -26,10 +25,10 @@ const getProductsByCategory = async(req,res,next)=>{
                     model:Category,
                     as:"category"
                 },
-                {
-                    model:User,
-                    as:"user"
-                }
+                // {
+                //     model:User,
+                //     as:"user"
+                // }
             ]
         })
 
@@ -96,7 +95,7 @@ const addCategory = async(req,res,next)=>{
 
 const updateCategory = async(req,res,next)=>{
     try{
-        const {id} = req.params;
+        const {id} = req.body;
         const {name} = req.body;    
 
         const category = await Category.findByPk(id);
@@ -123,7 +122,7 @@ const updateCategory = async(req,res,next)=>{
 
 const deleteCategory = async(req,res,next)=>{
     try{
-        const {id} = req.params;
+        const {id} = req.query;
         const category = await Category.findByPk(id);
 
         if(!category){

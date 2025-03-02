@@ -34,7 +34,7 @@ const addBrand = async(req,res,next)=>{
 
 const updateBrand = async(req,res,next)=>{
     try{
-        const {id} = req.params;
+        const {id} = req.body;
         const {name} = req.body;
 
         const brand = await Brand.findByPk(id);
@@ -60,7 +60,7 @@ const updateBrand = async(req,res,next)=>{
 
 const deleteBrand = async(req,res,next)=>{
     try{
-        const {id} = req.params;
+        const {id} = req.body;
         
         const brand = await Brand.findByPk(id);
 
@@ -70,7 +70,7 @@ const deleteBrand = async(req,res,next)=>{
             });
         }
 
-        await Brand.destroy();
+        await brand.destroy();
 
         res.status(200).json({
             message:"Brand deleted successfully"

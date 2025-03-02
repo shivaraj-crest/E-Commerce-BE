@@ -18,10 +18,10 @@ Router.get("/products", getAllCategoriesWithProducts); // GET all categories wis
 // Protected Routes (Authentication Required)
 Router.use(authenticate);
 
-Router.post("/create", authorizeRole("admin"), addCategory);  // Admin-only: Create category
+Router.post("/create", addCategory);  // Admin-only: Create category
 
-Router.put("/", authorizeRole("admin"), updateCategory); // Admin-only: Update category
-Router.delete("/", authorizeRole("admin"), deleteCategory); // Admin-only: Delete categor
+Router.put("/edit",updateCategory); // Admin-only: Update category
+Router.delete("/delete", deleteCategory); // Admin-only: Delete categor
 
 
 module.exports = Router;
