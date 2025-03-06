@@ -10,7 +10,7 @@ const {
   router.use(authenticate);
   router.get("/all", authorizeRole("admin"), getAllOrders);
   router.get("/admin/all", authorizeRole("admin"), getOrderListAdmin);
-  router.get("/:id", getAllOrdersByUserId);
+  router.get("/:id",authorizeRole("user"), getAllOrdersByUserId);
   
   module.exports = router;
   

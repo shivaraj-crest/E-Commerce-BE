@@ -18,8 +18,8 @@ Router.get("/admin",(req, res) => {
 });
 
   // Protected Route Example (Check if User is Regular User)
-Router.get("/user",async (req, res) => {
-  const {id} = req.body;
+Router.get("/user",authorizeRole("user"),async (req, res) => {
+  const {id} = req.query;
 
   if(!id) return res.status(400).json({message:"User id is required"});
   const user = await User.findOne({
@@ -30,7 +30,7 @@ Router.get("/user",async (req, res) => {
 
   if(!user) return res.status(400).json({message:"User not found"});
 
-  res.status(200).json({message:"Welcome Admin!",user});
+  res.status(200).json({message:"Welcome User!",user});
 });
 
 

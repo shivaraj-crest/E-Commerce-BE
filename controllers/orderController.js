@@ -7,6 +7,7 @@ const Order = db.orders;
 const User = db.users;
 const OrderItem = db.order_items;
 
+//user route for placing orders
 const placeOrder = async (data) => {
   const { userId, addressId, paymentMethod, paymentDetails, paymentId } = data;
   //   const t = await sequelize.transaction();
@@ -150,6 +151,7 @@ const getOrderListAdmin = async (req, res, next) => {
   }
 };
 
+//user routes
 const getAllOrdersByUserId = async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -174,6 +176,7 @@ const getAllOrdersByUserId = async (req, res, next) => {
     next(error);
   }
 };
+
 
 const getAllOrders = async (req, res, next) => {
   try {

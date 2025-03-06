@@ -1,6 +1,6 @@
 const {CartProduct} = require('../models');
 
-
+//user route
 const addProductToCart = async (req, res, next) => {
     try {
       const { product_id } = req.body;
@@ -33,7 +33,7 @@ const addProductToCart = async (req, res, next) => {
     }
   };
   
-
+//user route
   const getCartProducts = async(req,res,next)=>{
     try{
         const user_id = req.user.id;
@@ -61,7 +61,7 @@ const addProductToCart = async (req, res, next) => {
     }
   } 
 
-
+//user route
 const deleteProductFromCart = async(req,res,next)=>{
     try{
         const {product_id} = req.body;

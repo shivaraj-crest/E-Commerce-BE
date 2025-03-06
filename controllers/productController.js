@@ -133,46 +133,46 @@ const getAllProducts = async (req, res, next) => {
 
         const whereClause = {};
 
+        
+        // ✅ Convert category_id to an array of numbers if it exists
         if (category_id && category_id !== "all") {
-            const categories = category_id.split(",").map((id) => id.trim());
+            // console.log("slkdfjsdlkfjsdklfjsdlkfjdslkfj",category_id)
+            const categories = category_id.split(",").map(id => Number(id.trim())); // Convert to number array
+            // console.log("categoriessdfffffffffffffffffffffffffff",categories)
             whereClause.category_id = { [db.Sequelize.Op.in]: categories };
-          }
+        }
 
+        // ✅ Convert brand_id to an array of numbers if it exists
         if (brand_id && brand_id !== "all") {
-            const brands = brand_id.split(",").map((id) => id.trim());
+            const brands = brand_id.split(",").map(id => Number(id.trim())); // Convert to number array
             whereClause.brand_id = { [db.Sequelize.Op.in]: brands };
-          }
+        }
 
-          if (price_range) {
-            const [minPrice, maxPrice] = price_range.split(",").map(Number);
+        // ✅ Convert price_range (should be an array like `[minPrice, maxPrice]`)
+        if (price_range) {
+            
+            const [minPrice, maxPrice] = price_range.split(",").map(id=>Number(id.trim()));
+           
             whereClause.price = {
-              [db.Sequelize.Op.gte]: minPrice,
-              [db.Sequelize.Op.lte]: maxPrice,
+                [db.Sequelize.Op.gte]: minPrice,
+                [db.Sequelize.Op.lte]: maxPrice,
             };
-          }
+        }
 
-           // Handle ratings filtering
-    if (ratings) {
-        whereClause.rating = {
-          [db.Sequelize.Op.gte]: Number(ratings),
-        };
-      }
-  
-      // Add search functionality
-      if (search) {
-        whereClause[db.Sequelize.Op.or] = [
-          {
-            name: {
-              [db.Sequelize.Op.like]: `%${search}%`,
-            },
-          },
-          {
-            description: {
-              [db.Sequelize.Op.like]: `%${search}%`,
-            },
-          },
-        ];
-      }
+        // ✅ Convert ratings to a number if provided
+        if (ratings) {
+            whereClause.rating = {
+                [db.Sequelize.Op.gte]: Number(ratings),
+            };
+        }
+
+        // ✅ Handle search functionality
+        if (search) {
+            whereClause[db.Sequelize.Op.or] = [
+                { name: { [db.Sequelize.Op.like]: `%${search}%` } },
+                { description: { [db.Sequelize.Op.like]: `%${search}%` } },
+            ];
+        }
 
       const {count,rows:products} = await Product.findAndCountAll({
         where:whereClause,
@@ -200,7 +200,7 @@ const getAllProducts = async (req, res, next) => {
         ],
         order:[['createdAt','DESC']]
       })
-  
+      console.log("hhhhhhhhhhhhhhhhhhh")
 
     const formattedProducts = products.map((product) => ({
         ...product.toJSON(), // Remove Sequelize metadata we use findAndCountAll method 
