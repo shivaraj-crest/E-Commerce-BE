@@ -1,20 +1,31 @@
-const {CartProduct} = require('../models');
+const {CartProduct,Product} = require('../models');
 
 //user route
 const addProductToCart = async (req, res, next) => {
     try {
-      const { product_id } = req.body;
+      const { product_id,value } = req.body;
       const user_id = req.user.id; // Get user ID from auth middleware
-  
+      console.log("helooooooooo",product_id,value)
+      if(!product_id || value===null||undefined){
+        return res.status(400).json({
+          message:"product id and value both are required"
+      })
+      }
       // Check if product already exists in the user's cart
       let cartProduct = await CartProduct.findOne({
         where: { product_id, user_id }
       });
   
       if (cartProduct) {
-        // If product exists, increase the quantity
-        cartProduct.quantity += 1;
-        await cartProduct.save(); // Save the updated quantity
+        if(value){//if value is 1 then plus 1 the product
+          cartProduct.quantity += 1;
+          await cartProduct.save(); // Save the updated quantity
+        }
+        else{//if value is 0 then decrease the product item by one
+          cartProduct.quantity -= 1;
+          await cartProduct.save(); // Save the updated quantity
+        }
+       
       } else {
         // If product does not exist, create a new cart entry
         cartProduct = await CartProduct.create({
@@ -23,11 +34,20 @@ const addProductToCart = async (req, res, next) => {
           quantity: 1
         });
       }
-  
-      res.status(201).json({
-        message: "Product added to cart successfully",
-        cartProduct
-      });
+      
+      if(value){
+        res.status(201).json({
+          message: "Product added to cart successfully",
+          cartProduct
+        });
+
+      }
+      else{
+        res.status(201).json({
+          message: "product quantity decreased by 1 successfully",
+          cartProduct
+        });
+      }
     } catch (error) {
       next(error);
     }

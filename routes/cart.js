@@ -9,8 +9,8 @@ const {addProductToCart,
 Router.use(authenticate);
 
 Router.post('/add',addProductToCart);
+Router.delete('/delete',deleteProductFromCart);
 Router.get('/',getCartProducts);
-Router.delete('/',deleteProductFromCart);
 
 
 module.exports = Router;

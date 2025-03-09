@@ -8,7 +8,7 @@ const categoryRouter = require('./category.js');
 const productRouter = require('./product.js');
 const cartRouter = require('./cart.js');
 const orderRouter = require('./order.js');
-
+const addressRouter = require('./address.js')
 
 
 Router.use('/auth',authRouter);
@@ -18,6 +18,6 @@ Router.use('/category',categoryRouter);
 Router.use('/product',productRouter);
 Router.use('/cart',cartRouter);
 Router.use('/order',orderRouter);
-
+Router.use('/address',addressRouter);
 
 module.exports = Router;

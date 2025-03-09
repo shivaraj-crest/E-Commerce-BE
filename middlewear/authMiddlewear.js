@@ -19,7 +19,6 @@ const authenticate = async(req, res, next) => {
 
         // Fetch the user from the database
         const user = await User.findOne({ where: { id: decoded.id } });
-
         // Check if the user exists and compare roles
         if (!user) {
             return res.status(404).json({ message: "User not found",
@@ -35,10 +34,11 @@ const authenticate = async(req, res, next) => {
               status:false,
               status_code:403,
              });
-        }
-
-        // Attach user info to request object
-        req.user = user; // Store full user object instead of just decoded token
+            }
+            
+            // Attach user info to request object
+            req.user = user; // Store full user object instead of just decoded token
+     
 
         next();
     } catch (error) {
