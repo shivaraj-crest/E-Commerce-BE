@@ -84,9 +84,10 @@ const addProductToCart = async (req, res, next) => {
 //user route
 const deleteProductFromCart = async(req,res,next)=>{
     try{
-        const {product_id} = req.body;
+        const {product_id} = req.query;
         const user_id = req.user.id;
-
+        
+        console.log("deleteeeeeeeeeeeeeeeeeeeeeeee",product_id,user_id);
         const cartProduct = await CartProduct.findOne({
             where:{
                 product_id:product_id,

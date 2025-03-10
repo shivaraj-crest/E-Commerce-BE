@@ -13,7 +13,7 @@ Router.post('/login',upload.none(),authController.login);
 
 Router.use(authenticate);
 //admin routes
-Router.get("/admin",(req, res) => {
+Router.get("/admin",authorizeRole("admin"),(req, res) => {
   res.status(200).json({ message: "Admin content",status:true });
 });
 

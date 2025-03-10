@@ -129,7 +129,7 @@ const getAllProducts = async (req, res, next) => {
         const limit = parseInt(req.query.limit) || 10;
         const offset = (page-1)*limit;
 
-        const {category_id,brand_id,search,price_range,ratings} = req.query;
+        const {category_id,brand_id,search,price_range,ratings,sort} = req.query;
 
         const whereClause = {};
 
@@ -174,6 +174,15 @@ const getAllProducts = async (req, res, next) => {
             ];
         }
 
+         // ✅ Sorting Logic
+         let orderClause = [['createdAt', 'DESC']]; // Default sorting
+
+         if (sort === "1") {
+             orderClause = [['price', 'DESC']]; // High to Low
+         } else if (sort === "0") {
+             orderClause = [['price', 'ASC']]; // Low to High
+         }
+
       const {count,rows:products} = await Product.findAndCountAll({
         where:whereClause,
         limit,
@@ -198,7 +207,7 @@ const getAllProducts = async (req, res, next) => {
                 required:false
             }
         ],
-        order:[['createdAt','DESC']]
+        order:orderClause
       })
       console.log("hhhhhhhhhhhhhhhhhhh")
 
@@ -222,7 +231,8 @@ const getAllProducts = async (req, res, next) => {
             brand_id:brand_id || null,
             search:search || null,
             price_range:price_range || null,
-            ratings:ratings || null
+            ratings:ratings || null,
+            sort: sort || null
         },
       })
     } catch (error) {
